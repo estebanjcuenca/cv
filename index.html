@@ -51,434 +51,23 @@
 <link rel="stylesheet" href="fonts.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="fonts.css"></noscript>
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="studio.css">
 <link rel="stylesheet" href="print.css">
 </head>
 <body>
 
 <header id="toolbar">
   <span id="toolbar-name">Esteban Cuenca</span>
-  <div id="nav-vibe" aria-hidden="true">
-    <svg class="nav-vibe-svg" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true">
-      <path class="nav-vibe-path" d="M0 12 L200 12"></path>
-    </svg>
-  </div>
   <div id="toolbar-site" class="toolbar-actions">
     <button class="tb-btn" id="btn-dark" onclick="toggleDark()" title="Toggle dark mode">◐</button>
-    <button class="tb-btn" id="btn-studio" onclick="toggleStudio()" title="Beat studio">Studio</button>
-    <button class="tb-btn tb-icon-btn" id="btn-hover-settings" onclick="toggleHoverPanel()" title="Table hover settings" aria-label="Table hover settings">
-      <svg class="tb-icon tb-menu-icon" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
-        <path d="M3 4.5h10M3 8h10M3 11.5h10" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/>
-      </svg>
-    </button>
   </div>
   <div id="toolbar-export" class="toolbar-actions" hidden>
     <button class="tb-btn" id="btn-nav-back" type="button">Back</button>
     <button class="tb-btn tb-btn-toggle" id="btn-one-page" type="button" title="Switch to one-page layout">1 pg</button>
+    <button class="tb-btn tb-btn-toggle" id="btn-drift" type="button" title="DRIFT — standalone application resume">DRIFT</button>
+    <button class="tb-btn tb-btn-toggle" id="btn-100film" type="button" title="100% Film — Assistant to Producer">100%</button>
     <button class="tb-btn tb-btn-toggle" id="btn-eave" type="button" title="EAVE motivation statement (temp)">EAVE</button>
   </div>
 </header>
-
-<aside id="hover-panel" class="audio-drawer" aria-hidden="true">
-  <header class="sl-header">
-    <h2 class="sl-title">Table hover</h2>
-    <button class="sl-close" data-action="close-hover" type="button" aria-label="Close">
-      <svg class="sl-close-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-      </svg>
-    </button>
-  </header>
-  <div class="sl-panel-body">
-    <section class="sl-block sl-block-music" id="hover-music-seq" hidden>
-      <h3 class="sl-block-title">Sequencer</h3>
-      <p class="sp-hint">Music mode — step grids on <strong>Film</strong> and <strong>Commercial</strong> rows. Click steps to pattern; loop runs when the grid has notes. BPM is shared with Beat Studio.</p>
-      <div class="sl-field sl-field-block">
-        <label class="sl-field-label">Row sequencers</label>
-        <button type="button" class="sp-seg-btn active" id="music-seq-enabled" data-action="music-seq-toggle" aria-pressed="true">On</button>
-      </div>
-      <div class="sl-knob-grid sl-knob-grid-global">
-        <div class="sl-field sl-field-block">
-          <label class="sl-field-label">Steps</label>
-          <div class="sp-seg" data-param="steps">
-            <button class="sp-seg-btn" data-val="8">8</button>
-            <button class="sp-seg-btn active" data-val="16">16</button>
-          </div>
-        </div>
-        <div class="sl-field">
-          <label class="sl-field-label">Swing</label>
-          <input class="sp-range" data-param="swing" type="range" min="0.5" max="0.65" step="0.01" value="0.54">
-          <span class="sp-val" id="sp-swing-val">0.54</span>
-        </div>
-        <div class="sl-field sl-field-block">
-          <label class="sl-field-label">Humanize</label>
-          <div class="sp-seg" data-param="humanize">
-            <button class="sp-seg-btn" data-val="0">Off</button>
-            <button class="sp-seg-btn" data-val="1">On</button>
-          </div>
-        </div>
-        <div class="sl-field sl-field-block">
-          <label class="sl-field-label">Quantize notes</label>
-          <div class="sp-seg" data-param="quantizeNotes">
-            <button class="sp-seg-btn active" data-val="1">On</button>
-            <button class="sp-seg-btn" data-val="0">Off</button>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="sl-block sl-block-global sl-block-browse">
-      <p class="sp-hint">CV row hover — separate from the beat maker. Move across rows on the résumé to play tone.</p>
-      <div class="sl-wave-picker sl-wave-picker-global">
-        <span class="sl-field-label">Hover wave</span>
-        <div class="sl-wave-grid sp-seg" data-param="wave" data-scope="global">
-          <button class="sl-wave-btn sp-seg-btn" type="button" data-val="sine">Sine</button>
-          <button class="sl-wave-btn sp-seg-btn" type="button" data-val="triangle">Tri</button>
-          <button class="sl-wave-btn sp-seg-btn active" type="button" data-val="sawtooth">Saw</button>
-          <button class="sl-wave-btn sp-seg-btn" type="button" data-val="square">Sqr</button>
-        </div>
-      </div>
-      <div class="sl-knob-grid sl-knob-grid-global">
-        <div class="sl-field sl-field-block">
-          <label class="sl-field-label">Row hover</label>
-          <div class="sp-seg" data-param="mode">
-            <button class="sp-seg-btn active" data-val="harmonic">Hold</button>
-            <button class="sp-seg-btn" data-val="arpeggio">Arp</button>
-          </div>
-        </div>
-        <div class="sl-field">
-          <label class="sl-field-label">High-pass</label>
-          <input class="sp-range" data-param="browseHp" type="range" min="40" max="320" step="5" value="80">
-          <span class="sp-val" id="sp-browseHp-val">80 Hz</span>
-        </div>
-        <div class="sl-field">
-          <label class="sl-field-label">Reverb</label>
-          <input class="sp-range" data-param="reverbAmt" type="range" min="0" max="0.4" step="0.01" value="0.14">
-          <span class="sp-val" id="sp-reverbAmt-val">14%</span>
-        </div>
-        <div class="sl-field">
-          <label class="sl-field-label">Poly floor</label>
-          <input class="sp-range" data-param="browsePolyFloor" type="range" min="0.1" max="0.6" step="0.02" value="0.28">
-          <span class="sp-val" id="sp-browsePolyFloor-val">28%</span>
-        </div>
-        <div class="sl-field">
-          <label class="sl-field-label">Poly curve</label>
-          <input class="sp-range" data-param="browsePolyPow" type="range" min="0.2" max="0.9" step="0.02" value="0.48">
-          <span class="sp-val" id="sp-browsePolyPow-val">0.48</span>
-        </div>
-      </div>
-    </section>
-  </div>
-</aside>
-
-<aside id="studio-panel" class="audio-drawer" aria-hidden="true">
-  <header class="sl-header">
-    <h2 class="sl-title" id="sl-title">Beat Studio</h2>
-    <button class="sl-close" data-action="close-studio" type="button" aria-label="Close">
-      <svg class="sl-close-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-      </svg>
-    </button>
-  </header>
-  <div class="sl-panel-body sl-panel-stack">
-    <div class="sl-instructions" id="sl-instructions"></div>
-    <div class="sl-viz-stack">
-      <div class="sl-layer-preview" id="sl-layer-preview">
-        <span class="sl-viz-label">Selected dot</span>
-        <div class="sl-preview-stage">
-          <div id="sl-preview-dot" class="sl-preview-dot is-empty"></div>
-        </div>
-      </div>
-      <div class="sl-viz-block">
-        <span class="sl-viz-label">Live mix scope · duck meter</span>
-        <canvas id="sl-scope" class="sl-scope" aria-hidden="true"></canvas>
-      </div>
-      <div class="sl-viz-block">
-        <span class="sl-viz-label">Spectrum · band lanes</span>
-        <canvas id="sl-spectrum" class="sl-spectrum" aria-hidden="true"></canvas>
-      </div>
-      <div class="sl-viz-duo">
-        <div class="sl-viz-block sl-viz-block-half">
-          <span class="sl-viz-label">Compound wave</span>
-          <canvas id="sl-wave-shape" class="sl-shape-canvas" aria-hidden="true"></canvas>
-        </div>
-        <div class="sl-viz-block sl-viz-block-half">
-          <span class="sl-viz-label">Filter</span>
-          <canvas id="sl-filter-curve" class="sl-shape-canvas" aria-hidden="true"></canvas>
-        </div>
-      </div>
-      <dl class="sl-readout">
-        <div><dt>Dot</dt><dd id="sl-ro-layer-id">—</dd></div>
-        <div><dt>Note</dt><dd id="sl-ro-note">—</dd></div>
-        <div><dt>Filter</dt><dd id="sl-ro-filter">—</dd></div>
-        <div><dt>Gain</dt><dd id="sl-ro-gain">—</dd></div>
-        <div><dt>Space</dt><dd id="sl-ro-space">—</dd></div>
-        <div><dt>Mix</dt><dd id="sl-ro-mix">—</dd></div>
-      </dl>
-      <button class="sp-test sp-test-full" data-action="test" type="button">&#9654; Preview sound</button>
-    </div>
-
-    <div class="sl-settings">
-        <section class="sl-block sl-block-studio-global">
-          <h3 class="sl-block-title">Loop</h3>
-          <p class="sp-hint">1-bar loop — place dots in space. Close = groove; far = solo hit. Layer 0 shows all dots.</p>
-          <div class="sl-knob-grid sl-knob-grid-global">
-            <div class="sl-field">
-              <label class="sl-field-label">BPM</label>
-              <input class="sp-range" data-param="bpm" type="range" min="50" max="150" step="1" value="88">
-              <span class="sp-val" id="sp-bpm-val">88</span>
-            </div>
-            <div class="sl-field">
-              <label class="sl-field-label">Root pitch</label>
-              <input class="sp-range" id="sl-beat-root" type="range" min="55" max="220" step="1" value="110">
-              <span class="sp-val" id="sl-beat-root-val">A2 · 110 Hz</span>
-            </div>
-            <div class="sl-field sl-field-block sl-field-span">
-              <label class="sl-field-label">Scale</label>
-              <div class="sp-seg sp-seg-compact" id="sl-beat-scale-seg">
-                <button class="sp-seg-btn active" type="button" data-val="pent">Pent</button>
-                <button class="sp-seg-btn" type="button" data-val="major">Major</button>
-                <button class="sp-seg-btn" type="button" data-val="minor">Minor</button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <p class="sp-hint sl-layer-empty" id="sl-layer-empty">Layer 0 — all dots active. Tap a dot or pick an element; hold the pad to place a hit.</p>
-        <ul class="sl-loop-list" id="sl-loop-list" hidden></ul>
-
-        <section class="sl-block sl-block-layer" id="sl-block-layer" hidden>
-          <div class="sl-dot-head">
-            <h3 class="sl-block-title" id="sl-env-title">Environment</h3>
-            <button class="sp-solo-hold" data-action="solo-hold" type="button" title="Hold to hear only this dot">Solo</button>
-          </div>
-          <h3 class="sl-block-title sl-dot-subtitle" id="sl-layer-title">Dot</h3>
-          <p class="sp-hint sl-loop-note" id="sl-loop-note">—</p>
-
-          <h4 class="sl-subtitle">1 · Element</h4>
-          <p class="sp-hint" id="sl-preset-hint">Pick which layer to place — each keeps its own sound settings.</p>
-          <div class="sl-presets" data-scope="env">
-            <button class="sl-preset-btn" type="button" data-action="env-pick" data-env="kick">Kick</button>
-            <button class="sl-preset-btn" type="button" data-action="env-pick" data-env="hat">Hat</button>
-            <button class="sl-preset-btn" type="button" data-action="env-pick" data-env="clap">Clap</button>
-            <button class="sl-preset-btn" type="button" data-action="env-pick" data-env="bass">Bass</button>
-            <button class="sl-preset-btn" type="button" data-action="env-pick" data-env="bright">Lead</button>
-            <button class="sl-preset-btn" type="button" data-action="env-pick" data-env="minimal">Soft</button>
-            <button class="sl-preset-btn" type="button" data-action="env-pick" data-env="synth">Synth</button>
-            <button class="sl-preset-btn" type="button" data-action="env-pick" data-env="arpeggio">Arp</button>
-          </div>
-
-          <h4 class="sl-subtitle">2 · Layer sound</h4>
-          <p class="sp-hint sl-env-editing" id="sl-env-editing">Each element is its own machine — pick above to tune.</p>
-          <div class="sl-env-sound-panel">
-            <div class="sl-wave-picker sl-env-wave" id="sl-env-wave">
-              <span class="sl-field-label">Oscillator wave</span>
-              <div class="sl-wave-grid sp-seg" data-param="wave" data-scope="env">
-                <button class="sl-wave-btn sp-seg-btn" type="button" data-val="sine">Sine</button>
-                <button class="sl-wave-btn sp-seg-btn" type="button" data-val="triangle">Tri</button>
-                <button class="sl-wave-btn sp-seg-btn active" type="button" data-val="sawtooth">Saw</button>
-                <button class="sl-wave-btn sp-seg-btn" type="button" data-val="square">Sqr</button>
-              </div>
-            </div>
-            <p class="sp-hint sl-env-drum-wave-hint">Kick · Hat · Clap use drum samples — no oscillator wave.</p>
-            <div class="sl-knob-grid sl-env-sound-grid">
-              <div class="sl-field">
-                <label class="sl-field-label">Volume</label>
-                <input class="sp-range" data-param="gain" data-scope="env" type="range" min="0" max="0.55" step="0.005" value="0.13">
-                <span class="sp-val" id="sp-gain-val">13%</span>
-              </div>
-              <div class="sl-field">
-                <label class="sl-field-label" id="sl-env-decay-label">Release</label>
-                <input class="sp-range" data-param="decay" data-scope="env" id="sl-env-decay" type="range" min="0.2" max="4" step="0.1" value="1.1">
-                <span class="sp-val" id="sp-decay-val">1.1s</span>
-              </div>
-              <div class="sl-field sl-dot-melodic-only">
-                <label class="sl-field-label">Attack</label>
-                <input class="sp-range" data-param="attack" data-scope="env" type="range" min="0.02" max="0.6" step="0.01" value="0.11">
-                <span class="sp-val" id="sp-attack-val">110ms</span>
-              </div>
-              <div class="sl-field sl-dot-melodic-only">
-                <label class="sl-field-label">Detune</label>
-                <input class="sp-range" data-param="detune" data-scope="env" type="range" min="-50" max="50" step="1" value="0">
-                <span class="sp-val" id="sp-detune-val">0&#xa2;</span>
-              </div>
-              <div class="sl-field">
-                <label class="sl-field-label">Tone</label>
-                <input class="sp-range" data-param="browseTone" data-scope="env" type="range" min="0" max="1" step="0.01" value="0.58">
-                <span class="sp-val" id="sp-browseTone-val">58%</span>
-              </div>
-              <div class="sl-field">
-                <label class="sl-field-label" id="sl-env-harm-label">Harmonics</label>
-                <input class="sp-range" data-param="browseHarmonics" data-scope="env" type="range" min="0" max="1" step="0.02" value="0.58">
-                <span class="sp-val" id="sp-browseHarmonics-val">58%</span>
-              </div>
-              <div class="sl-field sl-dot-drum-only">
-                <label class="sl-field-label">Sub / body</label>
-                <input class="sp-range" data-param="browseSubMix" data-scope="env" type="range" min="0" max="0.35" step="0.005" value="0.08">
-                <span class="sp-val" id="sp-browseSubMix-val">8%</span>
-              </div>
-              <div class="sl-field">
-                <label class="sl-field-label">Filter min</label>
-                <input class="sp-range" data-param="browseFilterMin" data-scope="env" type="range" min="80" max="8000" step="20" value="320">
-                <span class="sp-val" id="sp-browseFilterMin-val">320 Hz</span>
-              </div>
-              <div class="sl-field">
-                <label class="sl-field-label">Filter max</label>
-                <input class="sp-range" data-param="browseFilterMax" data-scope="env" type="range" min="400" max="14000" step="50" value="7200">
-                <span class="sp-val" id="sp-browseFilterMax-val">7200 Hz</span>
-              </div>
-              <div class="sl-field sl-dot-melodic-only">
-                <label class="sl-field-label">Filter Q</label>
-                <input class="sp-range" data-param="browseFilterQ" data-scope="env" type="range" min="0.2" max="3" step="0.02" value="0.72">
-                <span class="sp-val" id="sp-browseFilterQ-val">0.72</span>
-              </div>
-              <div class="sl-field">
-                <label class="sl-field-label">Space</label>
-                <input class="sp-range" data-param="browseSpace" data-scope="env" type="range" min="0" max="0.45" step="0.01" value="0.07">
-                <span class="sp-val" id="sp-browseSpace-val">7%</span>
-              </div>
-              <div class="sl-field sl-dot-melodic-only">
-                <label class="sl-field-label">LFO rate</label>
-                <input class="sp-range" data-param="browseLfoRate" data-scope="env" type="range" min="0" max="8" step="0.05" value="0">
-                <span class="sp-val" id="sp-browseLfoRate-val">Off</span>
-              </div>
-              <div class="sl-field sl-dot-melodic-only">
-                <label class="sl-field-label">LFO depth</label>
-                <input class="sp-range" data-param="browseLfoDepth" data-scope="env" type="range" min="0" max="1" step="0.01" value="0.35">
-                <span class="sp-val" id="sp-browseLfoDepth-val">35%</span>
-              </div>
-            </div>
-          </div>
-          <div class="sl-actions-row sl-env-actions">
-            <button class="sp-test" data-action="preview-env" type="button">&#9654; Preview layer</button>
-            <button class="sp-test" data-action="reset-browse" type="button">Reset preset</button>
-          </div>
-
-          <h4 class="sl-subtitle">3 · Influence</h4>
-          <p class="sp-hint sl-influence-layer" id="sl-influence-layer">Pick Kick, Bass, Lead… in section 1 — each layer has its own neighbor coupling.</p>
-          <p class="sp-hint"><strong>Reach</strong> = neighbor distance · <strong>Coupling</strong> = bond/duck · <strong>Beat build</strong> = pattern fill · <strong>Melodic blend</strong> = pitch merge. Saved per layer with layer sound.</p>
-          <div class="sl-knob-grid sl-influence-grid">
-            <div class="sl-field">
-              <label class="sl-field-label">Neighbor reach</label>
-              <input class="sp-range" id="sl-influence-reach" type="range" min="0" max="100" step="1" value="48">
-              <span class="sp-val" id="sl-influence-reach-val">48%</span>
-            </div>
-            <div class="sl-field">
-              <label class="sl-field-label">Coupling strength</label>
-              <input class="sp-range" id="sl-influence-coupling" type="range" min="0" max="100" step="1" value="50">
-              <span class="sp-val" id="sl-influence-coupling-val">50%</span>
-            </div>
-            <div class="sl-field">
-              <label class="sl-field-label">Harmonize pull</label>
-              <input class="sp-range" id="sl-influence-pull" type="range" min="0" max="100" step="1" value="28">
-              <span class="sp-val" id="sl-influence-pull-val">28%</span>
-            </div>
-            <div class="sl-field">
-              <label class="sl-field-label">Beat build</label>
-              <input class="sp-range" id="sl-influence-beat-build" type="range" min="0" max="100" step="1" value="50">
-              <span class="sp-val" id="sl-influence-beat-build-val">50%</span>
-            </div>
-            <div class="sl-field">
-              <label class="sl-field-label">Melodic blend</label>
-              <input class="sp-range" id="sl-influence-melodic" type="range" min="0" max="100" step="1" value="50">
-              <span class="sp-val" id="sl-influence-melodic-val">50%</span>
-            </div>
-            <div class="sl-field sl-field-block sl-field-span">
-              <label class="sl-field-label">Snap beat (X)</label>
-              <div class="sp-seg sp-seg-compact" id="sl-influence-snapBeat-seg">
-                <button class="sp-seg-btn active" type="button" data-val="1">On</button>
-                <button class="sp-seg-btn" type="button" data-val="0">Off</button>
-              </div>
-            </div>
-            <div class="sl-field sl-field-block sl-field-span">
-              <label class="sl-field-label">Snap pitch (Y)</label>
-              <div class="sp-seg sp-seg-compact" id="sl-influence-snapPitch-seg">
-                <button class="sp-seg-btn active" type="button" data-val="1">On</button>
-                <button class="sp-seg-btn" type="button" data-val="0">Off</button>
-              </div>
-            </div>
-            <div class="sl-field sl-field-block sl-field-span">
-              <label class="sl-field-label">Auto harmonize on drag</label>
-              <div class="sp-seg sp-seg-compact" id="sl-influence-autoHarmonize-seg">
-                <button class="sp-seg-btn active" type="button" data-val="1">On</button>
-                <button class="sp-seg-btn" type="button" data-val="0">Off</button>
-              </div>
-            </div>
-          </div>
-          <blockquote class="sl-influence-quoted sp-hint">
-            <strong>Per-dot (inactive)</strong> — Presence (Z) will scale harmonize pull per sphere. Layer sliders above apply to every dot on that element for now.
-          </blockquote>
-          <p class="sp-hint sl-influence-effective" id="sl-influence-effective-pull">Pick a layer in section 1 to tune how its dots connect to neighbors.</p>
-          <p class="sp-hint sl-influence-readout" id="sl-influence-readout">Select a dot to see neighbor pull.</p>
-          <div class="sl-actions-row sl-influence-actions">
-            <button class="sp-test" data-action="harmonize-now" type="button">Harmonize selected dot</button>
-          </div>
-
-          <h4 class="sl-subtitle">4 · Dot</h4>
-          <p class="sp-hint sl-pitch-hint">↔ beat (X) · ↕ pitch (Y) · size · level. Layer influence (section 3) sets neighbor coupling for all dots on that element.</p>
-          <p class="sp-hint sl-spatial-map-hint" id="sl-spatial-map-hint">Y maps to pentatonic scale notes per layer · X = step in 16-beat loop · Z = loudness + pull strength.</p>
-
-          <div class="sl-knob-grid sl-dot-timing">
-            <div class="sl-field">
-              <label class="sl-field-label">Beat offset</label>
-              <input class="sp-range" id="sl-loop-step" type="range" min="0" max="15" step="1" value="0">
-              <span class="sp-val" id="sl-loop-step-val">1</span>
-            </div>
-            <div class="sl-field">
-              <label class="sl-field-label">Size</label>
-              <input class="sp-range" id="sl-loop-size" type="range" min="0.08" max="1" step="0.02" value="0.35">
-              <span class="sp-val" id="sl-loop-size-val">35%</span>
-            </div>
-            <div class="sl-field">
-              <label class="sl-field-label">Level</label>
-              <input class="sp-range" id="sl-loop-level" type="range" min="0.4" max="1.5" step="0.02" value="1">
-              <span class="sp-val" id="sl-loop-level-val">100%</span>
-            </div>
-            <div class="sl-field sl-presence-linked sl-field-inactive">
-              <label class="sl-field-label">Presence (Z)</label>
-              <input class="sp-range" id="sl-loop-presence" type="range" min="0.05" max="0.98" step="0.02" value="0.55" disabled aria-disabled="true" title="Per-dot presence — inactive for now">
-              <span class="sp-val" id="sl-loop-presence-val">55%</span>
-            </div>
-          </div>
-          <p class="sp-hint sl-solo-hint">Hold <strong>Solo</strong> to hear only this dot while tuning. Presence (Z) still moves on the pad — per-dot pull scaling is off until enabled.</p>
-
-          <h4 class="sl-subtitle sl-gravity-title">Cluster</h4>
-          <p class="sp-hint sl-gravity-hint"><strong>Cluster</strong> = spatial tiers (solo → pulse → groove from neighbor coupling). <strong>Solo/Pulse/Groove</strong> = lock that behavior. <strong>Density</strong> = how fast patterns fill.</p>
-          <div class="sl-gravity-controls">
-            <div class="sl-field sl-field-block sl-field-span">
-              <label class="sl-field-label">Pattern mode</label>
-              <div class="sp-seg sp-seg-compact" id="sl-gravity-mode-seg">
-                <button class="sp-seg-btn active" type="button" data-val="auto">Cluster</button>
-                <button class="sp-seg-btn" type="button" data-val="solo">Solo</button>
-                <button class="sp-seg-btn" type="button" data-val="pulse">Pulse</button>
-                <button class="sp-seg-btn" type="button" data-val="groove">Groove</button>
-              </div>
-            </div>
-            <div class="sl-field">
-              <label class="sl-field-label">Density</label>
-              <input class="sp-range" id="sl-gravity-density" type="range" min="0" max="100" step="1" value="28">
-              <span class="sp-val" id="sl-gravity-density-val">28%</span>
-            </div>
-          </div>
-          <p class="sl-gravity-summary" id="sl-gravity-summary">
-            <span id="sl-gravity-mode">—</span>
-            <span class="sl-gravity-sep">·</span>
-            <span>coupling <span id="sl-gravity-pull">—</span></span>
-            <span class="sl-gravity-sep">·</span>
-            <span id="sl-gravity-hits">—</span>
-          </p>
-          <div class="sl-gravity-strip steps-16" id="sl-gravity-strip" aria-hidden="true"></div>
-
-          <div class="sl-actions-row">
-            <button class="sp-test" data-action="remove-loop" type="button">Remove dot</button>
-          </div>
-        </section>
-
-        <p class="sp-hint" id="sp-marker-count"></p>
-        <div class="sl-actions-row">
-          <button class="sp-test" data-action="clear-markers" type="button">Clear all dots</button>
-        </div>
-    </div>
-  </div>
-</aside>
 
 <section id="hero">
   <div id="hero-text">
@@ -495,8 +84,23 @@
 
 <div id="a4-stage" hidden>
   <div id="a4-pages">
-    <div class="a4-page" id="a4-page-1"></div>
+    <div class="a4-page" id="a4-page-1"><div class="a4-page-body" id="a4-page-1-body"></div></div>
     <div class="a4-page" id="a4-page-2"></div>
+    <div class="a4-page" id="a4-eave-ipp-page" hidden>
+      <div class="eave-letterhead">
+        <span class="eave-lh-name"></span>
+        <span class="eave-lh-subtitle"></span>
+      </div>
+      <hr class="eave-lh-rule">
+      <div class="eave-body">
+        <h1 class="eave-doc-title"></h1>
+        <div class="eave-paras"></div>
+      </div>
+      <footer class="eave-footer">
+        <span class="eave-footer-email"></span>
+        <span class="eave-footer-location"></span>
+      </footer>
+    </div>
     <div class="a4-page" id="a4-eave-page" hidden>
       <div class="eave-letterhead">
         <span class="eave-lh-name"></span>
@@ -516,32 +120,6 @@
   </div>
 </div>
 
-<div id="beat-studio" hidden aria-hidden="true">
-  <div class="beat-studio-inner">
-    <div id="beat-transport" hidden aria-hidden="true"></div>
-    <div class="beat-env-bar" id="beat-env-bar" role="toolbar" aria-label="View">
-      <button type="button" class="beat-env-btn beat-env-btn-3d active" id="btn-beat-3d" title="Toggle 3D loop view">3D</button>
-    </div>
-    <div class="beat-workspace">
-      <div class="beat-view3d" id="beat-view3d" aria-label="3D loop molecule view">
-        <canvas id="beat-view3d-canvas"></canvas>
-        <div class="beat-view3d-hud">
-          <span class="beat-view3d-title">Loop space</span>
-          <span class="beat-view3d-axes">Click sphere · drag XY · shift+drag Z · gold = in tune + on beat · orange = clash</span>
-          <span class="beat-view3d-step" id="beat-view3d-step">—</span>
-        </div>
-      </div>
-      <div class="beat-pad-stack">
-        <div class="beat-pad influence-zone row-pad" id="beat-pad" role="application" aria-label="Beat space">
-          <span class="beat-pad-axis beat-pad-axis-x">Time → (soft grid)</span>
-          <span class="beat-pad-axis beat-pad-axis-y">Pitch / tone ↑</span>
-        </div>
-        <div class="beat-studio-overlay table-sound-overlay" aria-hidden="true"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div id="print-work">
   <div id="beat-guide" class="beat-guide" hidden role="status" aria-live="polite">
     <p class="beat-guide-text"></p>
@@ -555,35 +133,8 @@
      EDIT CONTENT BELOW — pure markdown, no HTML needed
      ═══════════════════════════════════════════════════════════════════ -->
 
-<!-- Shared audio core -->
-<script src="js/audio/constants.js"></script>
-<script src="js/audio/harmony.js"></script>
-<script src="js/audio/store.js"></script>
-<script src="js/audio/state.js"></script>
-<script src="js/audio/engine.js"></script>
-<script src="js/audio/theory.js"></script>
-<script src="js/audio/presets.js"></script>
-<script src="js/audio/machine-playback.js"></script>
-<script src="js/audio/machines.js"></script>
-<script src="js/audio/voices.js"></script>
-<!-- CV table hover (must load before sound.js — Sound wraps ECAudio.Browse) -->
-<script src="js/hover/browse-sound.js"></script>
-<script src="js/hover/zones.js"></script>
-<script src="js/hover/browse.js"></script>
-<script src="js/hover/nav-vibe.js"></script>
-<script src="js/audio/sound.js"></script>
-<script src="js/audio/seq.js"></script>
-<script src="js/audio/knobs.js"></script>
-<script src="js/audio/panel-shared.js"></script>
-<script src="js/audio/debug.js"></script>
-<script src="js/hover/panel-hover.js"></script>
-<script src="js/hover/site.js"></script>
-<!-- Beat studio — lazy-loaded via studio-loader.js on first Studio open -->
-<script src="js/studio/studio-loader.js"></script>
-<script src="js/studio/studio-mode.js"></script>
-<script src="js/audio/app.js"></script>
 <script>
-// Site script (CV render, A4 export, dark mode). Audio: js/audio/
+// Site script (CV render, A4 export, dark mode).
 
 // ── Preferences (run before DOMContentLoaded to avoid flash) ──
 if (localStorage.getItem('ec-dark') !== '0')
@@ -653,6 +204,21 @@ function formatCell(text) {
 
 function isSeparatorRow(line) {
   return /^\s*\|?\s*[-:]+[-| :]*$/.test(line);
+}
+
+// Rows tagged {dev} in content.md render locally only — hidden on production hosts
+const PROD_HOSTS = ['estebancuenca.com', 'www.estebancuenca.com', 'estebanjcuenca.github.io'];
+
+function isDevHost() {
+  return PROD_HOSTS.indexOf(location.hostname) < 0;
+}
+
+function rowIsDevOnly(cells) {
+  return cells.some(c => c.includes('{dev}'));
+}
+
+function stripDevMarker(s) {
+  return s.replace(/\s*\{dev\}/g, '').trim();
 }
 
 // Split entity cells so Role / location align across all tables
@@ -731,10 +297,12 @@ function normalizeTable(headers, rows) {
     return { key: col.key, label: labels[col.key] || '', cls };
   });
 
-  const data = rows.map(cells => {
+  const visibleRows = rows.filter(cells => !rowIsDevOnly(cells) || isDevHost());
+
+  const data = visibleRows.map(cells => {
     const raw = {};
     const html = {};
-    hl.forEach((h, i) => { raw[h] = (cells[i] || '').trim(); });
+    hl.forEach((h, i) => { raw[h] = stripDevMarker(cells[i] || ''); });
 
     if (kind === 'film' && raw.project) {
       html.entity = formatCell(raw.project);
@@ -913,6 +481,33 @@ async function render() {
   flushTable();
   if (cur) sections.push(cur);
 
+  // ── Separate {drift} / {100film} variant resumes from CV sections ──
+  window._cvVariantData = {};
+  CV_VARIANTS.forEach(v => {
+    const sec = sections.find(s => s.title.includes(v.marker));
+    sections = sections.filter(s => !s.title.includes(v.marker));
+    if (sec) window._cvVariantData[v.id] = parseCvVariantParas(sec.paras);
+  });
+
+  // ── Separate {eave-ipp} applicant notes from CV sections ──
+  const eaveIppSec = sections.find(s => s.title.includes('{eave-ipp}'));
+  sections = sections.filter(s => !s.title.includes('{eave-ipp}'));
+  if (eaveIppSec) {
+    const cleanTitle = eaveIppSec.title.replace('{eave-ipp}', '').trim();
+    const setElI = (sel, html, asText) => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      if (asText) el.textContent = html; else el.innerHTML = html;
+    };
+    setElI('#a4-eave-ipp-page .eave-doc-title', cleanTitle, true);
+    setElI('#a4-eave-ipp-page .eave-paras',
+      eaveIppSec.paras.map(p => `<p>${parseInline(p)}</p>`).join(''));
+    setElI('#a4-eave-ipp-page .eave-lh-name', name, true);
+    setElI('#a4-eave-ipp-page .eave-lh-subtitle', meta.subtitle || '', true);
+    setElI('#a4-eave-ipp-page .eave-footer-email', meta.email || '', true);
+    setElI('#a4-eave-ipp-page .eave-footer-location', meta.location || '', true);
+  }
+
   // ── Separate {eave} sections from CV sections ──
   const eaveSec = sections.find(s => s.title.includes('{eave}'));
   sections = sections.filter(s => !s.title.includes('{eave}'));
@@ -988,10 +583,9 @@ async function render() {
   document.getElementById('cv-sections').innerHTML = sections.map(sec => {
     const slug  = slugify(sec.title);
     const id    = `sec-${slug}`;
-    const isBank = ECAudio.MIDI_BANK_SLUGS.indexOf(slug) >= 0;
     const tbls  = sec.tables.map(t => buildTable(t.headers, t.rows)).join('');
     const paras = sec.paras.map(p => `<p>${parseInline(p)}</p>`).join('');
-    return `<section class="cv-section visible${isBank ? ' midi-bank' : ''}" id="${id}" data-bank="${slug}">
+    return `<section class="cv-section visible" id="${id}">
       <div class="sec-head">
         <span class="sec-label">${parseInline(sec.title)}</span>
         <button class="sec-toggle" onclick="toggleSection('${id}')">Hide</button>
@@ -1009,20 +603,8 @@ async function render() {
     if (btn) btn.textContent = 'Show';
   });
 
-  initInfluenceZones();
-  if (ECAudio.BrowseSound && ECAudio.BrowseSound.applyEngine) ECAudio.BrowseSound.applyEngine();
-  if (typeof syncHoverPanelUI === 'function') syncHoverPanelUI();
-  if (ECAudio.Markers && ECAudio.Markers.initOnLoad) ECAudio.Markers.initOnLoad();
-  else if (ECAudio.Markers && ECAudio.Markers.clearAll) ECAudio.Markers.clearAll();
-  if (ECAudio.Markers && ECAudio.Markers.scheduleRelayout) ECAudio.Markers.scheduleRelayout();
-
   // ── Init scroll animations ──
   initScrollReveal();
-  requestAnimationFrame(function() {
-    if (soundEnabled && typeof syncMusicSequencer === 'function') syncMusicSequencer();
-    else if (TrackSeq.unmount) TrackSeq.unmount();
-    if (ECAudio.runSoundDiagnostics) ECAudio.runSoundDiagnostics();
-  });
 }
 
 // ── Export mode: inline A4 preview, print = WYSIWYG ──
@@ -1055,15 +637,143 @@ function setOnePageMode(on) {
   if (isA4Mode()) {
     unmountA4Content();
     mountA4Content();
+    if (activeCvVariant()) applyVariantOverrides();
     preparePrintLayout();
   }
 }
+
+// ── Variant CV modes (DRIFT, 100% Film, …) ─────────────────────
+var CV_VARIANTS = [
+  { id: 'drift',   marker: '{drift}',   cls: 'a4-drift',   btn: 'btn-drift' },
+  { id: '100film', marker: '{100film}', cls: 'a4-100film', btn: 'btn-100film' }
+];
+window._cvVariantData = {};
+var _variantOrig = null;
+
+function parseCvVariantParas(paras) {
+  const firstIdx = paras.findIndex(p => p.trim());
+  const firstPara = firstIdx >= 0 ? paras[firstIdx].trim() : '';
+  const isRole = /^[A-Z][A-Z ,&\/\-\.&]+$/.test(firstPara);
+  const customRole = isRole ? firstPara : '';
+  const rest = isRole ? paras.slice(firstIdx + 1) : paras.slice(firstIdx);
+  const divIdx = rest.findIndex(p => /^\*\*[A-Z][A-Z ,&\/\-\.]+\*\*$/.test(p.trim()));
+  const bioParas = divIdx >= 0 ? rest.slice(0, divIdx) : rest;
+  const secTitle = divIdx >= 0 ? rest[divIdx].replace(/\*\*/g, '') : '';
+  const bulletParas = divIdx >= 0 ? rest.slice(divIdx + 1) : [];
+  return {
+    role: customRole,
+    bioHTML: bioParas.filter(p => p.trim()).map(p => `<p>${parseInline(p)}</p>`).join(''),
+    secTitle: secTitle,
+    bulletsHTML: bulletParas.filter(p => p.startsWith('- '))
+      .map(p => `<li>${parseInline(p.slice(2))}</li>`).join('')
+  };
+}
+
+function activeCvVariant() {
+  for (var i = 0; i < CV_VARIANTS.length; i++) {
+    if (document.documentElement.classList.contains(CV_VARIANTS[i].cls)) return CV_VARIANTS[i];
+  }
+  return null;
+}
+
+function isDriftMode() {
+  var v = activeCvVariant();
+  return v && v.id === 'drift';
+}
+
+function is100FilmMode() {
+  var v = activeCvVariant();
+  return v && v.id === '100film';
+}
+
+function applyVariantOverrides() {
+  var v = activeCvVariant();
+  if (!v || !window._cvVariantData[v.id]) return;
+  var d = window._cvVariantData[v.id];
+  var subtitleEl = document.getElementById('cv-subtitle');
+  var bioEl      = document.getElementById('cv-bio');
+  var sectionsEl = document.getElementById('cv-sections');
+  _variantOrig = {
+    subtitle: subtitleEl ? subtitleEl.textContent : '',
+    bio:      bioEl      ? bioEl.innerHTML        : ''
+  };
+  if (subtitleEl) subtitleEl.textContent = d.role;
+  if (bioEl)      bioEl.innerHTML        = d.bioHTML;
+  if (sectionsEl && (d.secTitle || d.bulletsHTML) && !document.getElementById('variant-skills-block')) {
+    var block = document.createElement('div');
+    block.id = 'variant-skills-block';
+    block.innerHTML =
+      '<h2 class="variant-skills-title">' + d.secTitle + '</h2>' +
+      '<ul class="variant-skills-list">' + d.bulletsHTML + '</ul>';
+    sectionsEl.parentNode.insertBefore(block, sectionsEl);
+  }
+}
+
+function removeVariantOverrides() {
+  if (_variantOrig) {
+    var subtitleEl = document.getElementById('cv-subtitle');
+    var bioEl      = document.getElementById('cv-bio');
+    if (subtitleEl) subtitleEl.textContent = _variantOrig.subtitle;
+    if (bioEl)      bioEl.innerHTML        = _variantOrig.bio;
+    _variantOrig = null;
+  }
+  var block = document.getElementById('variant-skills-block');
+  if (block && block.parentNode) block.parentNode.removeChild(block);
+}
+
+function setCvVariantMode(variantId, on) {
+  var target = CV_VARIANTS.find(function(v) { return v.id === variantId; });
+  if (!target) return;
+  var html  = document.documentElement;
+  var page2 = document.getElementById('a4-page-2');
+  if (on) {
+    if (isEaveMode()) setEaveMode(false);
+    CV_VARIANTS.forEach(function(v) {
+      html.classList.remove(v.cls);
+      var b = document.getElementById(v.btn);
+      if (b) b.classList.remove('active');
+    });
+    removeVariantOverrides();
+    html.classList.add(target.cls);
+    var btn = document.getElementById(target.btn);
+    if (btn) btn.classList.add('active');
+    html.classList.add('a4-one-page');
+    if (page2) page2.hidden = true;
+    var onePgBtn = document.getElementById('btn-one-page');
+    if (onePgBtn) { onePgBtn.textContent = '2 pg'; onePgBtn.title = 'Switch to two-page layout'; }
+    if (isA4Mode()) {
+      unmountA4Content();
+      mountA4Content();
+      applyVariantOverrides();
+      preparePrintLayout();
+    }
+  } else {
+    removeVariantOverrides();
+    html.classList.remove(target.cls);
+    var offBtn = document.getElementById(target.btn);
+    if (offBtn) offBtn.classList.remove('active');
+    if (isA4Mode()) {
+      unmountA4Content();
+      mountA4Content();
+      preparePrintLayout();
+    }
+  }
+}
+
+function setDriftMode(on) { setCvVariantMode('drift', on); }
+function set100FilmMode(on) { setCvVariantMode('100film', on); }
 
 function setEaveMode(on) {
   var html = document.documentElement;
   var btn = document.getElementById('btn-eave');
   var eavePage = document.getElementById('a4-eave-page');
   if (on) {
+    CV_VARIANTS.forEach(function(v) {
+      html.classList.remove(v.cls);
+      var b = document.getElementById(v.btn);
+      if (b) b.classList.remove('active');
+    });
+    removeVariantOverrides();
     html.classList.add('a4-eave');
     if (btn) btn.classList.add('active');
     if (eavePage) eavePage.hidden = false;
@@ -1091,10 +801,12 @@ function applyWorkScale(pct) {
   var scale = Math.max(0.5, Math.min(1, (pct || 100) / 100));
   document.documentElement.style.setProperty('--a4-work-scale', String(scale));
   var page1 = document.getElementById('a4-page-1');
+  var page1Body = document.getElementById('a4-page-1-body');
   var page2 = document.getElementById('a4-page-2');
   var eavePg = document.getElementById('a4-eave-page');
   if (isOnePageMode()) {
-    if (page1)  page1.style.setProperty('--a4-work-scale', String(scale));
+    if (page1Body) page1Body.style.setProperty('--a4-work-scale', String(scale));
+    else if (page1) page1.style.setProperty('--a4-work-scale', String(scale));
   } else {
     if (page1)  page1.style.setProperty('--a4-work-scale', String(scale));
     if (page2)  page2.style.setProperty('--a4-work-scale', String(scale));
@@ -1103,17 +815,63 @@ function applyWorkScale(pct) {
 }
 
 function autoFitWorkScale() {
-  var target = document.getElementById(isOnePageMode() ? 'a4-page-1' : 'a4-page-2');
-  if (!target) return;
+  var target = document.getElementById(isOnePageMode() ? 'a4-page-1-body' : 'a4-page-2');
+  var page = document.getElementById(isOnePageMode() ? 'a4-page-1' : 'a4-page-2');
+  if (!target || !page) return;
   applyWorkScale(100);
-  void target.offsetHeight;
-  if (target.scrollHeight > PRINT_PAGE_H_PX) {
-    applyWorkScale(Math.min(100, Math.round((PRINT_PAGE_H_PX / target.scrollHeight) * 100)));
+  void page.offsetHeight;
+
+  if (isOnePageMode()) {
+    var footer = document.getElementById('cv-footer');
+    var footerH = footer ? footer.offsetHeight : 0;
+    var limit = page.clientHeight;
+    var bodyH = target.scrollHeight;
+    if (limit > 0 && bodyH > 0 && bodyH + footerH > limit) {
+      var pct = Math.floor(((limit - footerH) / bodyH) * 97);
+      applyWorkScale(Math.max(50, Math.min(100, pct)));
+      void page.offsetHeight;
+      bodyH = target.scrollHeight;
+      if (bodyH + footerH > limit) {
+        pct = Math.floor(((limit - footerH) / bodyH) * 97);
+        applyWorkScale(Math.max(50, Math.min(100, pct)));
+      }
+    }
+    return;
   }
+
+  if (target.scrollHeight > page.clientHeight) {
+    applyWorkScale(Math.min(100, Math.round((page.clientHeight / target.scrollHeight) * 97)));
+  }
+}
+
+var MM_PX = 96 / 25.4;
+var ONE_PAGE_SEC_EXTRA_MAX_MM = 5.5;
+
+function distributeOnePageSectionGap() {
+  var root = document.documentElement;
+  root.style.setProperty('--one-page-sec-extra', '0mm');
+  if (!isA4Mode() || !isOnePageMode()) return;
+
+  var page = document.getElementById('a4-page-1');
+  var body = document.getElementById('a4-page-1-body');
+  var footer = document.getElementById('cv-footer');
+  var sections = document.querySelectorAll('#cv-sections .cv-section:not(.sec-hidden)');
+  if (!page || !body || sections.length < 2) return;
+
+  var gaps = sections.length - 1;
+  var footerH = footer ? footer.offsetHeight : 0;
+  var slack = page.clientHeight - body.scrollHeight - footerH;
+  if (slack <= 4) return;
+
+  var extraPx = Math.min(slack / gaps, ONE_PAGE_SEC_EXTRA_MAX_MM * MM_PX);
+  root.style.setProperty('--one-page-sec-extra', (extraPx / MM_PX).toFixed(1) + 'mm');
 }
 
 function preparePrintLayout() {
   if (!isA4Mode()) return;
+  document.documentElement.style.removeProperty('--one-page-sec-extra');
+  autoFitWorkScale();
+  distributeOnePageSectionGap();
   autoFitWorkScale();
   syncA4ToolbarOffset();
   updateA4ViewportScale();
@@ -1138,6 +896,7 @@ function mountA4Content() {
   var work   = document.getElementById('print-work');
   var footer = document.getElementById('cv-footer');
   var page1  = document.getElementById('a4-page-1');
+  var page1Body = document.getElementById('a4-page-1-body');
   var page2  = document.getElementById('a4-page-2');
   if (!hero || !work || !page1 || !page2) return;
   if (!a4Anchors.hero) {
@@ -1146,14 +905,15 @@ function mountA4Content() {
     a4Anchors.footer = footer ? { parent: footer.parentNode, next: footer.nextSibling } : null;
   }
   if (isOnePageMode()) {
-    page1.appendChild(hero);
-    page1.appendChild(work);
-    if (footer) page1.appendChild(footer); // footer pinned as last child of page
+    var bodyHost = page1Body || page1;
+    bodyHost.appendChild(hero);
+    bodyHost.appendChild(work);
+    if (footer) page1.appendChild(footer);
     page2.hidden = true;
   } else {
     page1.appendChild(hero);
     page2.appendChild(work);
-    if (footer) page2.appendChild(footer); // footer pinned as last child of page
+    if (footer) page2.appendChild(footer);
     page2.hidden = false;
   }
 }
@@ -1190,20 +950,24 @@ function setA4Mode(on) {
   var footerExportActions = document.getElementById('footer-export-actions');
   if (on) {
     mountA4Content();
+    if (activeCvVariant()) applyVariantOverrides();
     html.classList.add('a4-mode');
     syncExportNav(true);
     if (stage) stage.removeAttribute('hidden');
     if (footerExport) footerExport.hidden = true;
     if (footerExportActions) footerExportActions.hidden = false;
-    if (typeof exitBeatStudio === 'function') exitBeatStudio(true);
-    else if (typeof closeHoverPanel === 'function') closeHoverPanel();
-    else if (typeof closeStudioPanel === 'function') closeStudioPanel();
     preparePrintLayout();
     window.scrollTo(0, 0);
   } else {
+    removeVariantOverrides();
     html.classList.remove('a4-mode');
     html.classList.remove('a4-one-page');
     html.classList.remove('a4-eave');
+    CV_VARIANTS.forEach(function(v) {
+      html.classList.remove(v.cls);
+      var b = document.getElementById(v.btn);
+      if (b) b.classList.remove('active');
+    });
     var onePgBtn = document.getElementById('btn-one-page');
     if (onePgBtn) { onePgBtn.textContent = '1 pg'; onePgBtn.title = 'Switch to one-page layout'; }
     var eaveBtn = document.getElementById('btn-eave');
@@ -1211,9 +975,11 @@ function setA4Mode(on) {
     var eavePage = document.getElementById('a4-eave-page');
     if (eavePage) eavePage.hidden = true;
     var page1off  = document.getElementById('a4-page-1');
+    var page1BodyOff = document.getElementById('a4-page-1-body');
     var page2off  = document.getElementById('a4-page-2');
     var eaveOff   = document.getElementById('a4-eave-page');
     if (page1off) page1off.style.removeProperty('--a4-work-scale');
+    if (page1BodyOff) page1BodyOff.style.removeProperty('--a4-work-scale');
     if (eaveOff)  eaveOff.style.removeProperty('--a4-work-scale');
     if (page2off) page2off.hidden = false;
     syncExportNav(false);
@@ -1225,6 +991,7 @@ function setA4Mode(on) {
     if (pages) pages.style.zoom = '';
     if (page2off) page2off.style.removeProperty('--a4-work-scale');
     document.documentElement.style.removeProperty('--a4-work-scale');
+    document.documentElement.style.removeProperty('--one-page-sec-extra');
     if (footerExport) footerExport.hidden = false;
     if (footerExportActions) footerExportActions.hidden = true;
     unmountA4Content();
@@ -1251,6 +1018,8 @@ function initA4Controls() {
     if (e.target.closest('#btn-print')) { exportA4(); return; }
     if (e.target.closest('#btn-nav-back')) { setA4Mode(false); return; }
     if (e.target.closest('#btn-one-page')) { setOnePageMode(!isOnePageMode()); return; }
+    if (e.target.closest('#btn-drift')) { setCvVariantMode('drift', !isDriftMode()); return; }
+    if (e.target.closest('#btn-100film')) { setCvVariantMode('100film', !is100FilmMode()); return; }
     if (e.target.closest('#btn-eave')) { setEaveMode(!isEaveMode()); return; }
   });
   window.addEventListener('resize', function() {
@@ -1274,8 +1043,6 @@ function initA4Controls() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  NavVibe.init();
-  ECAudio.loadSoundPrefs();
   setA4Mode(false);
   render();
   initA4Controls();
