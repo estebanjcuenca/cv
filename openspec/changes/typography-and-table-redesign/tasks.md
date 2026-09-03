@@ -44,3 +44,12 @@
 
 - [x] 7.1 Confirmed: only `fonts.css` (-3 lines, the removed @font-face blocks) and `styles.css` (+76/-48) changed; `index.html` has zero diff
 - [x] 7.2 Commit with a clear message referencing this OpenSpec change
+
+## 8. Post-review refinements (user feedback: "looks odd" / "table too big and confusing")
+
+- [x] 8.1 Reverted `#cv-name` from `font-weight: 900` back to `400` — the Black weight read as loud/poster-like against the site's otherwise quiet, restrained register; hierarchy now comes from size alone (48-88px vs body text), which fits "lean/minimal/elegant" better than a fabricated weight jump
+- [x] 8.2 **Found and fixed a real bug**: `content.md` uses a literal `—` (em dash) as the "no value" placeholder for premiere/awards/support cells. The `:empty` CSS collapse rule (task 3.3) never matched these, since the cell wasn't actually empty — it contained "—". Every project with any empty field was showing a labeled row with just a dash in it (e.g. "PREMIERE —", "AWARDS —", "SUPPORT —"), which was probably the biggest contributor to the table still feeling big/cluttered after the redesign. Fixed in `buildTable()` (`index.html`): a cell whose trimmed value is exactly `-` or `—` now renders empty, so the existing `:empty` collapse correctly hides it
+- [x] 8.3 Verified the fix is safe: grepped `content.md` for every `—`-only cell (4 instances, all genuine "nothing here" placeholders, no legitimate content matches the pattern)
+- [x] 8.4 Verified visually: FAUCES/PHANTOM DATA/VYOLA CYANA rows (previously 5-6 lines each with dash clutter) are now 3-4 tight lines with only the fields that have real content
+- [x] 8.5 Considered also removing the Role/Premiere micro-labels for further decluttering, but held off — for other table kinds (e.g. Education's "Degree" field showing a bare year like "2026") the label is load-bearing for clarity, not just decoration; the dash-placeholder fix alone resolved most of the bloat, so didn't risk a clarity regression for marginal gain
+- [x] 8.6 Verified no regression: console clean, print/export cells render correctly blank (no dash) where a field is empty, `{wip}` award-splitting logic unaffected (checked before the new placeholder check, doesn't overlap)

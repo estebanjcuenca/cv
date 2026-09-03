@@ -374,6 +374,11 @@ function buildTable(headers, rows) {
         out += `<td${c}${labelAttr}>${content}</td>`;
       } else {
         const val = raw[col.key] || '';
+        // "—"/"-" are used in content.md as an explicit placeholder for
+        // "nothing here" — treat them the same as a truly empty cell so
+        // the record layout collapses the block instead of showing a
+        // labeled row with just a dash in it.
+        const isPlaceholder = /^[-—]$/.test(val.trim());
         if (col.key === 'awards' && val.includes('{wip}')) {
           const sepIdx = val.indexOf('{wip}');
           const main = val.slice(0, sepIdx).trim();
@@ -382,7 +387,7 @@ function buildTable(headers, rows) {
           const wipHtml  = wip  ? `<span class="award-wip">${main ? ' · ' : ''}${parseInline(wip)}</span>` : '';
           out += `<td${c}${labelAttr}>${mainHtml}${wipHtml}</td>`;
         } else {
-          out += `<td${c}${labelAttr}>${val ? parseInline(val) : ''}</td>`;
+          out += `<td${c}${labelAttr}>${val && !isPlaceholder ? parseInline(val) : ''}</td>`;
         }
       }
     });
