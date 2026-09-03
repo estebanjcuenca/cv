@@ -170,7 +170,7 @@ html.a4-eave.a4-mode #a4-eave-ipp-page { display: flex !important; }
 /* ── NAME ── */
 #cv-name {
   font-size: clamp(48px, 5.8vw, 88px);
-  font-weight: 400; line-height: .93;
+  font-weight: 900; line-height: .93;
   letter-spacing: -.03em;
   margin-bottom: clamp(16px, 2vw, 28px);
 }
@@ -206,7 +206,7 @@ html.a4-eave.a4-mode #a4-eave-ipp-page { display: flex !important; }
   margin-top: var(--space-lg);
   flex-shrink: 0;
   font-size: var(--nav-size);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: .02em;
   color: var(--ink);
 }
@@ -284,63 +284,100 @@ html.a4-eave.a4-mode #a4-eave-ipp-page { display: flex !important; }
   .cv-section.sec-hidden .sec-body { grid-template-rows: 0fr; }
 }
 
-/* ── TABLES — editorial list, not spreadsheet grid ── */
-.table-wrap { overflow-x: auto; }
+/* ── TABLES — per-project record layout, not a spreadsheet grid ──
+   Each row is a CSS grid: a compact head line (status/entity/role/premiere)
+   plus full-width detail blocks (festivals/awards/support) below, so a long
+   comma-separated list wraps against the whole row width instead of a
+   narrow fixed column. Same <table> markup as always — print.css re-forces
+   real table display + its own column widths under html.a4-mode,
+   independent of these screen-only rules. ── */
+.table-wrap { overflow-x: visible; }
 
 .cv-table {
   width: 100%;
-  table-layout: fixed;
   border-collapse: collapse;
   font-size: var(--body-size);
   line-height: 1.6;
 }
-.col-status     { width: 3%; }
-.col-entity     { width: 22%; }
-.col-role       { width: 12%; }
-.col-premiere   { width: 13%; }
-.col-festivals  { width: 26%; }
-.col-awards     { width: 13%; }
-.col-support    { width: 11%; }
+.cv-table, .cv-table tbody { display: block; width: 100%; }
+.cv-table thead { display: none; }
 
-/* Hairline rule above header only */
-.cv-table thead tr {
-  border-top: .5px solid var(--line);
-}
+.cv-table tbody { border-top: .5px solid var(--line); }
 
-.cv-table th {
-  font-size: var(--nav-size);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--mid);
-  font-weight: 400;
-  text-align: left;
-  padding: 0 24px 14px 0;
-  border-bottom: .5px solid var(--line);
-}
-.cv-table th:last-child { padding-right: 0; }
-
-.cv-table td {
-  padding: clamp(16px, 2.2vw, 22px) 24px clamp(16px, 2.2vw, 22px) 0;
-  vertical-align: top;
-  border-bottom: none;
-}
-.cv-table td:last-child { padding-right: 0; }
-.cv-table tbody tr:not(:first-child) td {
-  border-top: .5px solid var(--line);
-}
-
-/* Row hover — subtle bg */
 .cv-table tbody tr {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 20px;
+  row-gap: 12px;
+  padding: clamp(16px, 2.2vw, 22px) 0;
+  border-bottom: .5px solid var(--line);
+  align-items: start;
   transition: background .15s ease, color .15s ease;
 }
+.cv-table tbody tr:last-child { border-bottom: none; }
 .cv-table tbody tr:hover {
   background: color-mix(in srgb, var(--mid) 8%, var(--bg));
 }
 
-/* Status dot */
-.col-status th, .col-status td {
-  width: 18px; padding-right: 10px;
+.cv-table td {
+  padding: 0;
+  vertical-align: top;
+  border: none;
 }
+
+/* Head line: status · entity · role · premiere, side by side.
+   Role/premiere carry a small label above the value, same idea as the
+   detail blocks below, so removing <thead> doesn't lose which-is-which. */
+.cv-table td.col-status  { grid-column: 1; grid-row: 1; padding-top: 5px; }
+.cv-table td.col-entity  { grid-column: 2; grid-row: 1; }
+.cv-table td.col-role    { grid-column: 3; grid-row: 1; }
+.cv-table td.col-premiere{ grid-column: 4; grid-row: 1; }
+.cv-table td.col-role:empty,
+.cv-table td.col-premiere:empty { display: none; }
+.cv-table td.col-role::before,
+.cv-table td.col-premiere::before {
+  content: attr(data-label);
+  display: block;
+  font-size: var(--nav-size);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 4px;
+}
+
+/* Detail blocks: full row width, label + wrapped value side by side.
+   Absolute-positioned label (not a grid column) so every wrapped line
+   keeps a consistent left margin — a bare text node next to a ::before
+   doesn't reliably grid/flex-place into a value column. */
+.cv-table td.col-festivals,
+.cv-table td.col-awards,
+.cv-table td.col-support {
+  grid-column: 1 / -1;
+  position: relative;
+  padding-left: 126px;
+  min-height: 1.6em;
+}
+.cv-table td.col-festivals:empty,
+.cv-table td.col-awards:empty,
+.cv-table td.col-support:empty {
+  display: none;
+}
+.cv-table td.col-festivals::before,
+.cv-table td.col-awards::before,
+.cv-table td.col-support::before {
+  content: attr(data-label);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 110px;
+  font-size: var(--nav-size);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+/* Status dot */
+.col-status.col-status-empty { visibility: hidden; }
 .dot {
   display: inline-block; width: 6px; height: 6px; border-radius: 50%;
   margin-top: 4px;
@@ -591,12 +628,6 @@ html.nav-simple-page .legal {
   .footer-actions {
     margin-top: 2px;
   }
-}
-
-/* Table — horizontal scroll in landscape */
-@media screen and (max-width: 900px) and (orientation: landscape) {
-  .cv-table { min-width: 700px; }
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 }
 
 /* Print page-2 wrapper — block on screen so CV sections layout reliably */
