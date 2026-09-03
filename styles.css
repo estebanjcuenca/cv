@@ -86,7 +86,11 @@ a:hover { text-decoration: underline; }
   position: relative;
   z-index: 2;
 }
-#nav-vibe {
+/* ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+   STUDIO+SOUND: Nav vibe (animated waveform line in toolbar)
+   Responds to audio playback. Comment back in when re-enabling audio.
+   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ */
+/* #nav-vibe {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -117,7 +121,7 @@ a:hover { text-decoration: underline; }
 }
 @media (prefers-reduced-motion: reduce) {
   #nav-vibe { display: none; }
-}
+} */
 
 .toolbar-actions {
   display: flex;
@@ -137,14 +141,20 @@ html.a4-one-page #btn-one-page { opacity: 1; background: var(--ink); color: var(
 #btn-eave:hover { opacity: 1; text-decoration: underline; }
 #btn-eave.active { opacity: 1; background: var(--ink); color: var(--bg); border-color: var(--ink); }
 /* EAVE page is invisible unless EAVE print mode is active */
+
 #a4-eave-page { display: none !important; }
 html.a4-eave.a4-mode #a4-eave-page { display: flex !important; }
-.toolbar-sound {
+#a4-eave-ipp-page { display: none !important; }
+html.a4-eave.a4-mode #a4-eave-ipp-page { display: flex !important; }
+/* ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+   STUDIO+SOUND: Toolbar sound controls
+   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ */
+/* .toolbar-sound {
   display: flex;
   align-items: center;
   gap: clamp(4px, 1vw, 8px);
   flex-shrink: 0;
-}
+} */
 /* Toolbar buttons as plain text links */
 .tb-btn {
   font-family: var(--font);
@@ -419,8 +429,12 @@ body.hover-panel-open {
   background: color-mix(in srgb, var(--mid) 8%, var(--bg));
 }
 
+/* ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+   STUDIO+SOUND: Browse mode and sound markers (dots on CV tables)
+   Hover sound overlays. Comment back in when re-enabling audio.
+   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ */
 /* Sound mode — rows are pads; table DOM stays valid (no positioning on <tr>) */
-html.browse-mode:not(.a4-mode) .table-wrap {
+/* html.browse-mode:not(.a4-mode) .table-wrap {
   position: relative;
   overflow-x: auto;
   overflow-y: visible;
@@ -578,8 +592,11 @@ html.browse-mode:not(.a4-mode) .sound-marker.is-playing.is-beat {
   box-shadow:
     0 0 0 var(--marker-border, 2px) color-mix(in srgb, var(--bg) 65%, transparent),
     0 0 calc(10px + var(--marker-glow, 0) * 16px) color-mix(in srgb, hsl(var(--dot-hue, 210) var(--dot-sat, 48%) var(--dot-light, 48%)) 55%, transparent);
-}
-.sl-role-seg {
+} */
+/* ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+   STUDIO+SOUND: Role segment buttons (beat studio layer picker)
+   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ */
+/* .sl-role-seg {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
@@ -606,12 +623,16 @@ html.browse-mode:not(.a4-mode) .sound-marker.is-playing.is-beat {
 }
 .sl-role-seg .sp-seg-btn.active[data-loop-role="hat"] {
   background: color-mix(in srgb, var(--role-hat) 22%, var(--bg));
-}
+} */
 
+/* ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+   STUDIO+SOUND: Beat overlay mode (beat studio 6 musical layers)
+   CV table transforms into beat grid interface. Large section — 100+ lines.
+   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ */
 /* Beat studio — 6 musical layers */
-html.beat-overlay:not(.a4-mode) tr.row-pad.beat-layer-extra {
+/* html.beat-overlay:not(.a4-mode) tr.row-pad.beat-layer-extra {
   display: none;
-}
+} */
 html.beat-overlay:not(.a4-mode) tr.row-pad.beat-layer-active {
   position: relative;
 }

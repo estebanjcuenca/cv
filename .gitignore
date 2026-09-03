@@ -3,3 +3,7 @@ node_modules/
 *.log
 disc-atlas.html
 disc-atlas-assembly_3.jsx
+model-viewer.html
+Controller/stl/
+js/vendor/
+*.stl

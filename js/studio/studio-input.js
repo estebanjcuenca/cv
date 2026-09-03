@@ -45,8 +45,15 @@ function initStudioInput() {
 
   document.addEventListener('keydown', function(e) {
     if (soundEnabled || !isBeatStudioActive()) return;
-    if (e.key !== 'Delete' && e.key !== 'Backspace') return;
     if (e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+
+    if (e.key === 'c' || e.key === 'C') {
+      e.preventDefault();
+      window.open('./disc-atlas.html', '_blank');
+      return;
+    }
+
+    if (e.key !== 'Delete' && e.key !== 'Backspace') return;
     var sel = ECAudio.Markers && ECAudio.Markers.getSelected
       ? ECAudio.Markers.getSelected() : null;
     if (!sel || !ECAudio.Markers.remove) return;
