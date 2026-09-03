@@ -8,10 +8,6 @@
   --ink:  #1A1714;
   --mid:  #8C8880;
   --bg:   #F0EDE7;
-  --role-kick: #a84832;
-  --role-chord: #4f63c7;
-  --role-lead: #c99212;
-  --role-hat: #2a9d8f;
   --line: var(--mid);
   --font: 'PPRadioGrotesk', system-ui, -apple-system, sans-serif;
   --bar-h:  48px;
@@ -29,10 +25,6 @@ html.dark {
   --mid:  #5E5B58;
   --bg:   #0F0D09;
   --line: var(--mid);
-  --role-kick: #e07a5f;
-  --role-chord: #7b8ee8;
-  --role-lead: #f0c040;
-  --role-hat: #5ecfbc;
 }
 
 /* ── RESET ── */
@@ -132,8 +124,12 @@ html.a4-eave.a4-mode #a4-eave-ipp-page { display: flex !important; }
   border-color: var(--ink);
   text-decoration: none;
 }
-#btn-dark { letter-spacing: 0; }
-#btn-dark:hover { text-decoration: underline; }
+.tb-icon-btn:hover { text-decoration: none; }
+.tb-icon-btn:hover .tb-icon { opacity: .55; }
+.tb-icon {
+  display: block;
+  fill: none;
+}
 
 /* ── HERO ── */
 #hero {
@@ -204,19 +200,30 @@ html.a4-eave.a4-mode #a4-eave-ipp-page { display: flex !important; }
   #cv-bio p { max-width: 74ch; }
 }
 
-/* Scroll cue — sits below bio in text column */
+/* View-the-work CTA — sits below bio in text column */
 #hero-scroll {
-  display: none;
+  display: block;
   margin-top: var(--space-lg);
   flex-shrink: 0;
   font-size: var(--nav-size);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: .02em;
-  color: var(--mid);
+  color: var(--ink);
 }
-#hero-scroll a { color: inherit; }
-#hero-scroll a:hover { color: var(--ink); text-decoration: underline; }
-@media screen and (min-width: 769px) { #hero-scroll { display: block; } }
+#hero-scroll a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 4px;
+  transition: border-color .2s ease, gap .2s ease;
+}
+#hero-scroll a:hover {
+  border-color: var(--ink);
+  gap: 12px;
+}
+.hero-scroll-icon { display: block; flex-shrink: 0; }
 
 /* ── SECTIONS ── */
 #cv-sections {
@@ -416,11 +423,14 @@ html.a4-mode .award-wip { display: none !important; }
     margin-top: 4px;
   }
 
-  /* Remaining columns: label + value pairs */
+  /* Remaining columns: label + value pairs — extra line-height/word-spacing
+     helps long comma·separated lists (festivals, awards) stay scannable
+     when wrapped across several lines on a narrow screen */
   .cv-table td:not(.col-status):not(.col-entity) {
     margin-top: clamp(10px, 2.5vw, 14px);
     font-size: var(--body-size);
-    line-height: 1.55;
+    line-height: 1.75;
+    word-spacing: 0.04em;
   }
   .cv-table td:not(.col-status):not(.col-entity)::before {
     content: attr(data-label);
@@ -547,7 +557,7 @@ html.nav-simple-page .legal {
   }
   #hero-photo {
     position: relative; top: 0;
-    height: clamp(300px, 150vw, 640px);
+    height: clamp(200px, 55vw, 340px);
     order: -1;
   }
   #hero-text {
