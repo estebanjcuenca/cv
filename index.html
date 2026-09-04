@@ -1065,10 +1065,13 @@ function initA4Controls() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  setA4Mode(false);
-  render();
+document.addEventListener('DOMContentLoaded', async function() {
+  // This subdomain exists only to show the A4 export view — skip the
+  // normal inline landing entirely and open straight into it once the
+  // content has loaded, instead of requiring a click on the export icon.
   initA4Controls();
+  await render();
+  enterExportMode();
 });
 
 </script>
