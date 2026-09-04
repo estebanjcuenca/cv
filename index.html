@@ -415,13 +415,16 @@ function parseFrontmatter(raw) {
 async function render() {
   let raw = '';
   try {
-    const res = await fetch('content.md');
+    // Single source of truth: the main site's content.md, fetched live.
+    // Keeps this CV export in sync with the portfolio without a manual
+    // copy/sync step — only edit content.md on the main site.
+    const res = await fetch('https://www.estebancuenca.com/content.md');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     raw = await res.text();
   } catch (err) {
     console.error('Could not load content.md:', err);
     document.getElementById('cv-bio').innerHTML =
-      '<p>Could not load <code>content.md</code>. This site must be served over HTTP — run <code>python3 -m http.server</code> in this folder, or use Live Server.</p>';
+      '<p>Could not load <code>content.md</code> from the main site. Check that www.estebancuenca.com is reachable.</p>';
     return;
   }
   const { meta, body } = parseFrontmatter(raw);
